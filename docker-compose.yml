@@ -46,3 +46,13 @@ services:
       bash -c "pip install pipenv
       && pipenv install
       && ./bootstrap.sh"
+  
+  deploy:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    environment:
+      - BACKEND_URL=http://localhost:5000
+    ports:
+      - '80:80'
