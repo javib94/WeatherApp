@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  database:
+    image: mariadb:10.5
+    restart: always
+    environment:
+      MARIADB_DATABASE: "${DB_NAME}"
+      # So you don't have to use root, but you can if you like
+      MARIADB_USER: "${DB_USER}"
+      # You can use whatever password you like
+      MARIADB_PASSWORD: "${DB_PASSWORD}"
+      # Password for root access
+      MARIADB_ROOT_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3307:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+   
+
+  backend:
+    image: python:3.8
+    #build: 
+    #  context: ./backend_weatherapp
+    #  dockerfile: Dockerfile
+    working_dir: /usr/src/
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '5000:5000'
+    volumes:
+      - "./backend_weatherapp:/usr/src"
+    environment:
+      #database es el url de la base de datos utilizando el ruteo de docker-compose
+      DB_URL: "${DB_URL}"
+      DB_PORT: "${DB_PORT}"
+      #las credenciales deben ser las mismas que las configuradas en la base de datos
+      DB_NAME: "${DB_NAME}"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+    depends_on:
+      - "database" 
+    command: >
+      bash -c "pip install pipenv
+      && pipenv install
+      && ./bootstrap.sh"
