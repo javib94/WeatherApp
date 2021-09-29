@@ -1,5 +1,5 @@
 # Se nombra este stage del docker como builder
-FROM node:10 AS builder
+FROM node:12 AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN npm i && npm run build
 # Segundo stage creado
 FROM nginx:1.13.9-alpine
 
-COPY  --from=builder app/dist/ /usr/share/nginx/html
+COPY  --from=builder app/dist/weather-app/ /usr/share/nginx/html
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
