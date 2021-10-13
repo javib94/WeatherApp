@@ -62,14 +62,5 @@ services:
       bash -c "npm install 
       && npm start"
 
-  # deploy:
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile
-  #   restart: always
-  #   environment:
-  #     - BACKEND_URL=http://localhost:5000
-  #   ports:
-  #     - '80:80'
 
   
