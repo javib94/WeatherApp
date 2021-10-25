@@ -30,7 +30,7 @@ services:
       # <Port exposed> : < MySQL Port running inside container>
       - '5000:5000'
     volumes:
-      - "./backend_weatherapp:/usr/src"
+      - "./WeatherApp_BackEnd:/usr/src"
     environment:
       #database es el url de la base de datos utilizando el ruteo de docker-compose
       DB_URL: "${DB_URL}"
@@ -53,7 +53,7 @@ services:
     ports: 
       - '4200:4200'
     volumes:
-      - "./frontend_weatherapp:/app"
+      - "./WeatherApp_FrontEnd:/app"
     environment:
       API_HOST: "backend"
       API_PORT: "5000"
