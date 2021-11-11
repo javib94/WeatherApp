@@ -43,7 +43,9 @@ services:
     depends_on:
       - "database" 
     command: >
+    
       bash -c "pip install pipenv
+      && export FLASK_ENV=development
       && pipenv install
       && ./bootstrap.sh"
     
