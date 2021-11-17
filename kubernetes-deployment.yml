@@ -1,0 +1,94 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: backend
+      track: stable
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: hello
+          image: "jacevel97/weatherapp_backend:latest"
+          ports:
+            - name: http
+              containerPort: 5000
+      env:
+        - name: API_KEY
+          value: "033543edb64c3da524b3a8bedf52c37c"
+        - name: DB_URL
+          value: "190.154.54.6"
+        - name: DB_NAME
+          value: "weatherapp"
+        - name: DB_USER
+          value: "weatheruser"
+        - name: DB_PASSWORD
+          value: "weatherpassword"
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+spec:
+  selector:
+    app: hello
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: http
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+        - name: nginx
+          image: "jacevel97/weatherapp_frontend:latest
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: hello
+    tier: frontend
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+
+
